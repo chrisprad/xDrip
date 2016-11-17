@@ -1,6 +1,9 @@
 package com.eveningoutpost.dexdrip;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.PathDashPathEffect;
 import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
@@ -87,6 +90,27 @@ public class BgGraphBuilder {
         lines.add(inRangeValuesLine());
         lines.add(lowValuesLine());
         lines.add(highValuesLine());
+        lines.add(basalValuesLine());
+
+        //TODO: foreach basal deviation: add:
+
+        float basal = (float) (lowMark + 0.25*(highMark - lowMark));
+        float temp = (float) (lowMark + 0.15*(highMark - lowMark));
+        float begin = (float) (start_time + 0.12*(end_time-start_time));
+        float end = (float) (start_time + 0.2*(end_time-start_time));
+        lines.add(addBasalDeviation(basal,basal, temp, begin, end));
+
+        temp = (float) (lowMark + 0.0*(highMark - lowMark));
+        begin = (float) (start_time + 0.2*(end_time-start_time));
+        end = (float) (start_time + 0.3*(end_time-start_time));
+        lines.add(addBasalDeviation(basal,basal, temp, begin, end));
+
+        basal = (float) (lowMark + 0.3*(highMark - lowMark));
+        temp = (float) (lowMark + 0.75*(highMark - lowMark));
+        begin = (float) (start_time + 0.7*(end_time-start_time));
+        end = (float) (start_time + 0.85*(end_time-start_time));
+        lines.add(addBasalDeviation(basal,basal, temp, begin, end));
+
         return lines;
     }
 
@@ -106,6 +130,33 @@ public class BgGraphBuilder {
         lowValuesLine.setPointRadius(pointSize);
         lowValuesLine.setHasPoints(true);
         return lowValuesLine;
+    }
+
+    public Line basalValuesLine() {
+        List<PointValue> lowLineValues = new ArrayList<PointValue>();
+        lowLineValues.add(new PointValue(fuzz(start_time), (float) (lowMark + 0.25*(highMark - lowMark))));
+        lowLineValues.add(new PointValue(fuzz((start_time+end_time)/2), (float) (lowMark + 0.25*(highMark - lowMark))));
+        lowLineValues.add(new PointValue(fuzz((start_time+end_time)/2), (float) (lowMark + 0.3*(highMark - lowMark))));
+        lowLineValues.add(new PointValue(fuzz(end_time), (float) (lowMark + 0.3*(highMark - lowMark))));
+        Line lowLine = new Line(lowLineValues);
+        lowLine.setHasPoints(false);
+        lowLine.setColor(Color.parseColor("#00BFFF"));
+        lowLine.setPathEffect(new DashPathEffect(new float[]{4f, 3f}, 4f));
+        lowLine.setStrokeWidth(1);
+        return lowLine;
+    }
+
+    public Line addBasalDeviation(float basalStart, float basalEnd, float absoluteTemp, float from, float to){
+        List<PointValue> valueList = new ArrayList<PointValue>();
+        valueList.add(new PointValue(fuzz(from), basalStart ));
+        valueList.add(new PointValue(fuzz(from), absoluteTemp ));
+        valueList.add(new PointValue(fuzz(to), absoluteTemp ));
+        valueList.add(new PointValue(fuzz(to), basalEnd ));
+        Line valueLine = new Line(valueList);
+        valueLine.setHasPoints(false);
+        valueLine.setColor(Color.BLUE);
+        valueLine.setStrokeWidth(1);
+        return valueLine;
     }
 
     public Line inRangeValuesLine() {

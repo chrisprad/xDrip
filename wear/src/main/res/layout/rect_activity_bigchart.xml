@@ -55,6 +55,15 @@
             android:layout_gravity="bottom"
             android:gravity="center_horizontal|top" />
 
+        <TextView
+            android:textSize="18sp"
+            android:text="E 1.0U/h  IOB: 1.4 (0.6+0.8)"
+            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
