@@ -357,7 +357,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NSClientReceiver">
+        <!--receiver android:name=".NSClientReceiver">
             <intent-filter>
                 <action android:name="info.nightscout.client.NEW_SGV" />
             </intent-filter>
@@ -378,7 +378,7 @@
             <intent-filter>
                 <action android:name="com.eveningoutpost.dexdrip.FROM_LIBRE_ALARM" />
             </intent-filter>
-        </receiver>
+        </receiver -->
         <receiver
             android:name=".localeTasker.receiver.FireReceiver"
             android:exported="true"

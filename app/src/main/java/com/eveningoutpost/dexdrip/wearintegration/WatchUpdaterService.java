@@ -414,16 +414,17 @@ public class WatchUpdaterService extends WearableListenerService implements
                     initWearData();
                 } else if (ACTION_SYNC_SENSOR.equals(action)) {//KS
                     Log.d(TAG, "onStartCommand Action=" + ACTION_SYNC_SENSOR + " Path=" + WEARABLE_SENSOR_DATA_PATH);
-                    sendSensorData();
+                    //sendSensorData();
                 } else if (ACTION_SYNC_CALIBRATION.equals(action)) {//KS
                     Log.d(TAG, "onStartCommand Action=" + ACTION_SYNC_CALIBRATION + " Path=" + WEARABLE_CALIBRATION_DATA_PATH);
-                    sendWearCalibrationData(sendCalibrationCount);
+                    //sendWearCalibrationData(sendCalibrationCount);
+                    resendData();
                 } else {
                     if (!mPrefs.getBoolean("use_wear_connectG5", false)
                             || !mPrefs.getBoolean("wear_connectG5",false)
                             || (!is_using_g5)) { //KS only send BGs if using Phone's G5 Collector Server
                         sendData();
-                        sendWearBgData(1);
+                        //sendWearBgData(1);
                         Log.d(TAG, "onStartCommand Action=" + " Path=" + WEARABLE_BG_DATA_PATH);
                     }
                 }
