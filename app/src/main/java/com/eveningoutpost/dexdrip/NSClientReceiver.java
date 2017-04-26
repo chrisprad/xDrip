@@ -206,7 +206,14 @@ public class NSClientReceiver extends BroadcastReceiver {
             try {
                 double myslope = (double) sgv_map.get("unfiltered") / (double) sgv_map.get("mgdl");
                 double filtered_calculated_value = (double) sgv_map.get("filtered") / myslope;
-                jsonObject.put("filtered_calculated_value", filtered_calculated_value);
+                if(!Double.isNaN(filtered_calculated_value)) {
+                    jsonObject.put("filtered_calculated_value", filtered_calculated_value);
+                }
+                else { //Dexcom G5 edit
+                    sgv_map.put("filtered",null);
+                    sgv_map.put("unfiltered",null);
+                    jsonObject.put("filtered_calculated_value", sgv_map.get("mgdl")); // use mgdl
+                }
             } catch (NullPointerException e) {
                 Log.i(TAG, "Cannot calculate raw slope due to null pointer on unfiltered?");
                 jsonObject.put("filtered_calculated_value", sgv_map.get("mgdl")); // use mgdl
